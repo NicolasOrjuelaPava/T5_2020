@@ -8,7 +8,7 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 	//Atributos
 	private int size;
 	private int numeroDuplas;
-	private Node<K,V> nodos[];
+	private Node<K,V> lista_nodos[];
 	private int cantRehash;
 
 	
@@ -16,7 +16,7 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 	public HashLinearProbing(int m){
 		size = m;
 		numeroDuplas = 0;
-		nodos = new Node[m];
+		lista_nodos = new Node[m];
 		cantRehash = 0;
 	}
 
@@ -24,7 +24,7 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 	
 	//-----------METODOS-------------
 	public Node<K,V>[] getNodes(){
-		return nodos;
+		return lista_nodos;
 	}
 
 	public int darSize(){
@@ -60,11 +60,11 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 		
 		int i = hashFunction(key);
 		
-		while(nodos[i] != null){
+		while(lista_nodos[i] != null){
 			
-			if(nodos[i].getKe().equals(key)){
+			if(lista_nodos[i].getKe().equals(key)){
 				
-				nodos[i].setValue(value);
+				lista_nodos[i].setValue(value);
 				
 				return;
 			}
@@ -73,7 +73,7 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 		}
 		
 		
-		nodos[i] = new Node<K,V>(key, value);
+		lista_nodos[i] = new Node<K,V>(key, value);
 		
 		numeroDuplas++;
 	}
@@ -100,11 +100,11 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 
 		if(key != null){
 			
-			for(int i = hashFunction(key); nodos[i] != null; i = (i+1) % size){
+			for(int i = hashFunction(key); lista_nodos[i] != null; i = (i+1) % size){
 				
-				if(nodos[i].getKe().equals(key)){
+				if(lista_nodos[i].getKe().equals(key)){
 					
-					r = nodos[i].getFirst().getData();
+					r = lista_nodos[i].getFirst().getData();
 				}
 			}
 		}
@@ -120,11 +120,11 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 		
 		if(key != null){
 			
-			for(int i = hashFunction(key); nodos[i] != null; i = (i + 1) % size){
+			for(int i = hashFunction(key); lista_nodos[i] != null; i = (i + 1) % size){
 				
-				if(nodos[i].getKe().equals(key)){
+				if(lista_nodos[i].getKe().equals(key)){
 					
-					Value<V> val = nodos[i].getFirst();
+					Value<V> val = lista_nodos[i].getFirst();
 					
 					
 					while(val != null){
@@ -152,15 +152,15 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 		
 		t = (t + 1) % size;
 		
-		while (nodos[t] != null){
+		while (lista_nodos[t] != null){
 			
 			
-			V rehashValue = nodos[t].getFirst().getData();
+			V rehashValue = lista_nodos[t].getFirst().getData();
 
-			K rehashKey = nodos[t].getKe();
+			K rehashKey = lista_nodos[t].getKe();
 			
 			
-			nodos[t]=null;
+			lista_nodos[t]=null;
 			numeroDuplas--;
 			
 			put(rehashKey, rehashValue);
@@ -177,9 +177,9 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 
 		for(int i = 0; i < size; i++){
 			
-			if(nodos[i] != null){
+			if(lista_nodos[i] != null){
 				
-				keys.add(nodos[i].getKe());
+				keys.add(lista_nodos[i].getKe());
 			}
 		}
 
@@ -196,14 +196,14 @@ public class HashLinearProbing <K extends Comparable<K>, V> {
 		
 		for (int i = 0; i < size; i++){
 			
-			if (nodos[i] != null){
+			if (lista_nodos[i] != null){
 				
-				temp.put(nodos[i].getKe(), nodos[i].getFirst().getData());
+				temp.put(lista_nodos[i].getKe(), lista_nodos[i].getFirst().getData());
 			}
 		}
 		
 		size = temp.darSize();
-		nodos = temp.getNodes();
+		lista_nodos = temp.getNodes();
 		
 		cantRehash++;
 	}
